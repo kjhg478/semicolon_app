@@ -1,5 +1,5 @@
 const options = {
-  uri: "http://localhost:4040/"
+  uri: "http://192.168.219.107:4000"
 }
 
 
