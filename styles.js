@@ -8,6 +8,7 @@ export default {
     greyColor: "#FAFAFA",
     blueColor: "#3897f0",
     navyColor: "#364152",
+    yellowColor: "#FFDF00",
     redColor:"ED4956",
     brownColor: "#B3795D",
     ivoryColor:"#DB937B",
