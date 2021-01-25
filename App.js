@@ -3,7 +3,7 @@ import { AntDesign  } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, StatusBar, Platform  } from 'react-native';
 import AsyncStorage from "@react-native-community/async-storage";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
@@ -65,6 +65,7 @@ export default function App() {
     <ApolloProvider client={client} >
       <ThemeProvider theme={styles}>
         <AuthProvider isLoggedIn={isLoggedIn}>
+          { Platform.OS === "ios" ? <StatusBar barStyle="dark-content" /> : "" }
           <NavController />
         </AuthProvider>
         </ThemeProvider>
