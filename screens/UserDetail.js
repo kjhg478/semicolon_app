@@ -6,7 +6,10 @@ import Loader from "../components/Loader";
 import { ScrollView } from "react-native";
 import UserProfile from "../components/UserProfile";
 
-const GET_USER = gql`
+
+
+
+export const GET_USER = gql`
   query seeUser($username: String!) {
     seeUser(username: $username)  {
     user{

@@ -3,4 +3,11 @@ SemiColon iOS & Android APP
 Screens :
 
 - [ ] Home
-- [] Search
+- [ ] Search
+- [ ] Upload
+- [ ] Notifications (Challenge)
+- [ ] Profile
+- [ ] Edit Profile (Challenge)
+- [ ] Photo Detail
+- [ ] Photo Comments (Challenge)
+- [ ] Photo Likes (Challenge)

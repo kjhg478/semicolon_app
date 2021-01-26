@@ -41,7 +41,7 @@ const SearchPresenter = ({ term, shouldFetch }) => {
     }
   };
   return (
-    <ScrollView
+    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
       refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }

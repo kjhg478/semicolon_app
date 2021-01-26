@@ -99,11 +99,11 @@ const Post = ({
           </HeaderUserContainer>
         </Touchable>
       </Header>
-      <Swiper style={{ height: constants.height / 2.1 }}
+      <Swiper style={{ height: constants.width/0.88 }}
       >
         {files.map(file => (
           <Image
-            style={{ width: constants.width, height: constants.height / 2.5 }}
+            style={{ width: constants.width, height: constants.width}}
             key={file.id}
             source={{ uri: file.url }}
           />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Image, View, TouchableOpacity } from "react-native";
+import { Image, View, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
@@ -8,6 +8,7 @@ import { Platform } from "@unimodules/core";
 import constants from "../constants";
 import SquarePhoto from "./SquarePhoto";
 import Post from "./Post";
+import { useLogOut } from "../AuthContext";
 
 const ProfileHeader = styled.View`
   padding: 20px;
@@ -61,6 +62,22 @@ const Button = styled.View`
   align-items: center;
 `;
 
+const Button1 = styled.View`
+  width:90px;
+  align-items: center;
+  margin-left : ${constants.width / 2.3};
+  background-color:${styles.navyColor};
+  height:30px;
+  border-radius: 15px;
+`;
+
+const Text = styled.Text`
+margin-top : 5px;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+`;
+
 const UserProfile = ({
     user: { avatar,
         postsCount,
@@ -100,7 +117,12 @@ const UserProfile = ({
       </ProfileHeader>
       <ProfileMeta>
         <Bold>{fullName}</Bold>
-        <Bio>{bio}</Bio>
+        <ProfileStats>
+          <Bio>{bio}</Bio>
+          <Button1>
+            <TouchableOpacity onPress={useLogOut()}><Text>Log Out</Text></TouchableOpacity>
+          </Button1>
+          </ProfileStats>
       </ProfileMeta>
       <ButtonContainer>
         <TouchableOpacity onPress={toggleGrid}>
