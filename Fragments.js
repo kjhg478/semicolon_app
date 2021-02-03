@@ -20,6 +20,7 @@ export const POST_FRAGMENT = gql`
       id
       text
       user {
+        avatar
         id
         username
       }
@@ -30,28 +31,21 @@ export const POST_FRAGMENT = gql`
 
 export const USER_FRAGMENT = gql`
   fragment UserParts on User {
-    user{
     id
     avatar
     username
     fullName
+    firstName
+    lastName
     isFollowing
     isSelf
     bio
     followingCount
     followersCount
     postsCount
+    posts {
+      ...PostParts
     }
-    posts{
-        id
-
-      files{
-        id
-        url
-      }
-        likeCount
-        commentCount
-     }
   }
+  ${POST_FRAGMENT}
 `;
-

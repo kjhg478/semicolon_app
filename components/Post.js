@@ -5,10 +5,11 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
-import constants from "../constants";
+import constants from "../Constants";
 import styles from "../styles";
 import { useMutation } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
+import Comments from "./Comments";
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
@@ -66,6 +67,7 @@ const Post = ({
 }) => {
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
+  const [copyCaption, setCopyCaption] = useState(caption)
   const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
     variables: {
       postId: id
@@ -80,10 +82,9 @@ const Post = ({
     setIsLiked(p => !p);
     try {
       await toggleLikeMutaton();
-    } catch (e) {}
+    } catch (e) { }
   };
-  return (
-    <Container>
+  return (<Container>
       <Header>
         <Touchable
           onPress={() => navigation.navigate("UserDetail", { username: user.username })}>
@@ -96,11 +97,11 @@ const Post = ({
           <HeaderUserContainer>
             <Bold>{user.username}</Bold>
             <Location>{location}</Location>
-          </HeaderUserContainer>
-        </Touchable>
+        </HeaderUserContainer>
+      </Touchable>
+      {user.isSelf ? <Popup id={id} copyCaption={copyCaption} setCopyCaption={setCopyCaption} /> : null}
       </Header>
-      <Swiper style={{ height: constants.width/0.88 }}
-      >
+      <Swiper style={{ height: constants.width/0.88 }}>
         {files.map(file => (
           <Image
             style={{ width: constants.width, height: constants.width}}
@@ -128,8 +129,8 @@ const Post = ({
               />
             </IconContainer>
           </Touchable>
-          <Touchable>
-            <IconContainer>
+          <Touchable onPress={() => navigation.navigate("CommentDetail", { id })}>
+            <IconContainer >
               <FontAwesome
                 color={styles.blackColor}
                 size={24}
@@ -144,12 +145,14 @@ const Post = ({
         <Caption>
           <Bold>{user.username}</Bold> {caption}
         </Caption>
-        <Touchable>
-          <CommentCount>See all {comments.length} comments</CommentCount>
+      <Touchable onPress={() => navigation.navigate("CommentDetail", { id })}>
+      {/* <Touchable> */}
+         {comments.length> 0?<CommentCount>댓글 {comments.length}개 더보기</CommentCount>:<CommentCount>첫번째 댓글의 주인공이 되어주세요!</CommentCount>}
+
         </Touchable>
       </InfoContainer>
-    </Container>
-  );
+      </Container>
+  )
 };
 
 Post.propTypes = {

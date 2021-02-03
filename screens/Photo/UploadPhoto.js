@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Image, ActivityIndicator, Alert } from "react-native";
-import styled from "styled-components/native";
+import { Image, ActivityIndicator, Alert, Platform } from "react-native";
+import styled from "styled-components";
 import useInput from "../../hooks/useInput";
 import styles from "../../styles";
-import constants from "../../constants";
+import constants from "../../Constants";
 import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
-import { FEED_QUERY } from "../Tabs/Home";
-import { ME } from "../Tabs/Profile";
+import { FEED_QUERY } from "../home/Home";
+import { ME } from "../tabs/Profile";
 import { GET_USER } from "../UserDetail";
-import { POST_DETAIL } from "../Detail";
 
 const UPLOAD = gql`
   mutation upload($caption: String!, $files: [String!]!, $location: String) {
@@ -62,48 +61,51 @@ export default ({ navigation }) => {
   const captionInput = useInput("");
   const locationInput = useInput("");
   const [uploadMutation] = useMutation(UPLOAD, {
-    refetchQueries: () => [{ query: FEED_QUERY }, { query: ME }]
+    refetchQueries: () => [{ query: FEED_QUERY }, {query:ME}]
   });
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
-      Alert.alert("All fields are required");
+      Alert.alert("모든 항목을 입력해 주세요.");
     }
     const formData = new FormData();
     const name = photo.filename;
     const [, type] = name.split(".");
+    const imageType = Platform.os === "ios" ? type.toLowerCase() : "image/jpeg";
     formData.append("file", {
       name,
-      type: type.toLowerCase(),
+      type: imageType,
       uri: photo.uri
     });
     try {
       setIsLoading(true);
       const {
         data: { location }
-      } = await axios.post("http://192.168.219.106:4000/api/upload", formData, {
+      } = await axios.post("https://semicolon-backend.herokuapp.com/api/upload", formData, {
         headers: {
-          "Content-type": "multipart/form-data"
+          "content-type": "multipart/form-data"
         }
       });
 
       const {
         data: { upload }
       } = await uploadMutation({
-        variables: {
-          files: [location],
-          caption: captionInput.value,
-          loacation: locationInput.value,
-        }
-      });
+          variables: {
+            files: [location],
+            caption: captionInput.value,
+            location: locationInput.value
+          }
+        });
       if (upload.id) {
-        navigation.navigate("TabNavigation")
+        navigation.navigate("TabNavigation");
       }
-     
+      
     } catch (e) {
-      Alert.alert("Cant upload", "Try later");
-    } finally { 
+      console.log("에러 " + e);
+      Alert.alert("업로드 실패", "다시 시도해 주세요 🤔");
+    } finally {
       setIsLoading(false);
     }
+    
   };
   return (
     <View>
@@ -116,14 +118,14 @@ export default ({ navigation }) => {
           <STextInput
             onChangeText={captionInput.onChange}
             value={captionInput.value}
-            placeholder="Caption"
+            placeholder="글 내용"
             multiline={true}
             placeholderTextColor={styles.darkGreyColor}
           />
           <STextInput
             onChangeText={locationInput.onChange}
             value={locationInput.value}
-            placeholder="Location"
+            placeholder="위치"
             multiline={true}
             placeholderTextColor={styles.darkGreyColor}
           />
@@ -131,7 +133,7 @@ export default ({ navigation }) => {
             {loading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text>Upload </Text>
+              <Text>업로드 </Text>
             )}
           </Button>
         </Form>

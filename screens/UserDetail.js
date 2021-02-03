@@ -1,56 +1,18 @@
 import React from "react";
 import { useQuery } from "react-apollo-hooks";
 import { gql } from "apollo-boost";
-import { USER_FRAGMENT } from "../fragment";
+import { USER_FRAGMENT } from "../Fragments";
 import Loader from "../components/Loader";
 import { ScrollView } from "react-native";
 import UserProfile from "../components/UserProfile";
 
-
-
-
 export const GET_USER = gql`
   query seeUser($username: String!) {
-    seeUser(username: $username)  {
-    user{
-          id
-          avatar
-          username
-          fullName
-          isFollowing
-          isSelf
-          bio
-          followingCount
-          followersCount
-          postsCount
-      }
-          posts {
-             id
-    location
-    caption
-    user {
-      id
-      avatar
-      username
+    seeUser(username: $username) {
+      ...UserParts
     }
-    files {
-      id
-      url
-    }
-    likeCount
-    isLiked
-    comments {
-      id
-      text
-      user {
-        id
-        username
-      }
-    }
-    createdAt
-          }
-      }
-    }
+  }
+  ${USER_FRAGMENT}
 `;
 
 export default ({ navigation }) => {

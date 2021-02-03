@@ -1,65 +1,73 @@
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
-import SelectPhoto from "../screens/Photo/SelectPhoto";
-import TakePhoto from '../screens/Photo/TakePhoto';
-import UploadPhoto from '../screens/Photo/UploadPhoto'; 
+import SelectPhoto from "../screens/photo/SelectPhoto";
+import TakePhoto from "../screens/photo/TakePhoto";
+import UploadPhoto from "../screens/photo/UploadPhoto";
 import styles from "../styles";
 import React from "react";
-import UploadLinks from "../components/UploadLinks";
-
+import UploadLink from '../components/UploadLink';
 
 const PhotoTabs = createMaterialTopTabNavigator(
     {
-    Select: {
-      screen: SelectPhoto,
-      navigationOptions: {
-        tabBarLabel: "Select"
-      }
-    },
-    Take: {
-      screen: TakePhoto,
-      navigationOptions: {
-        tabBarLabel: "Take"
-      }
-    }
+        Select: {
+            screen: SelectPhoto,
+            navigationOptions: {
+                tabBarLabel: "사진 선택"
+            }
+        },
+        Take: {
+            screen: TakePhoto,
+            navigationOptions: {
+                tabBarLabel: "사진 촬영"
+            }
+        }
     },
     {
-      tabBarPosition: "bottom",
-    tabBarOptions: {
-      indicatorStyle: {
-        backgroundColor: styles.navyColor,
-        marginBottom: 48
-      },
-      labelStyle: {
-        color: styles.blackColor,
-        fontWeight: "600"
-      },
-      style: {
-          backgroundColor: styles.searchColor
-      }
-    }
+       tabBarPosition: "bottom",
+        tabBarOptions: {
+            
+            indicatorStyle: {
+                backgroundColor: styles.navyColor,
+                marginBottom: 48
+            },
+            labelStyle: {
+            color: styles.navyColor,
+            fontWeight: "600"
+            },
+            style: {
+                //paddingBottom: 20,
+                backgroundColor: styles.searchColor
+            }
+        }
     }
 );
 
-export default createStackNavigator({
-    PhotoTabs: {
-    screen: PhotoTabs,
-        navigationOptions: {
-            title: "Choose Photo",
-            headerTintColor: styles.blackColor,
-            headerBackTitle: " ",
-            headerRight:
-            <UploadLinks/>
+
+
+export default createStackNavigator(
+    {
+        PhotoTabs: {
+            screen:PhotoTabs,
+            navigationOptions: {
+                //headerShown:false,
+                headerBackTitle: " ",
+                headerTintColor: styles.blackColor,
+                title: "사진 선택",
+                headerRight: <UploadLink />
+            }
+           
+        },
+        Upload: {
+            screen:UploadPhoto,
+            navigationOptions: {
+                headerBackTitle: " ",
+                headerTintColor: styles.blackColor,
+                title:"업로드"
+            }
         }
+        
     },
-    Upload: {
-        screen: UploadPhoto,
-        navigationOptions: {
-            headerTintColor: styles.blackColor,
-            headerBackTitle: " ",
-            title: "UploadPhoto"
-        }
+    {
+        mode:"modal"
     }
-}, {
-    mode:"modal"
-})
+);

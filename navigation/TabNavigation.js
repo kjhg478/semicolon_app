@@ -1,20 +1,22 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import React from "react";
-import Home from "../screens/Tabs/Home";
-import Search from "../screens/Tabs/Search/index";
-import Notifications from "../screens/Tabs/Notifications";
+import Home from "../screens/home/Home";
+import Search from "../screens/tabs/Search/index";
+import Notifications from "../screens/tabs/Notifications";
 import MessagesLink from "../components/MessagesLink";
-import Profile from "../screens/Tabs/Profile";
+import Profile from "../screens/tabs/Profile";
 import Detail from "../screens/Detail";
 import { createStackNavigator } from 'react-navigation-stack';
 import { Platform } from "react-native";
 import NavIcon from "../components/NavIcon";
 import { AntDesign } from '@expo/vector-icons'; 
 import styled from "styled-components/native";
-import constants from "../constants";
+import constants from "../Constants";
 import styles from "../styles";
 import UserDetail from "../screens/UserDetail";
+import CommentDetail from "../screens/CommentDetail";
+import NavigationContainer from "./EventNavigation/index";
 
 const Image = styled.Image`
   margin-top : -30px;
@@ -37,7 +39,7 @@ const stackFactory = (initialRoute, customConfig) =>
         navigationOptions: {
           headerBackTitle:" ",
           headerTintColor: styles.blackColor,
-          title: "Photo"
+          title: "Post"
         }
       },
       
@@ -46,6 +48,15 @@ const stackFactory = (initialRoute, customConfig) =>
         navigationOptions: ({ navigation }) => ({
           title: navigation.getParam("username")
         })
+      },
+      
+      CommentDetail: {
+       screen: CommentDetail,
+        navigationOptions: {
+          headerBackTitle:" ",
+          headerTintColor: styles.blackColor,
+          title: "Comments"
+        }
       }
     },
     {
@@ -60,7 +71,8 @@ export default createBottomTabNavigator(
     Home: {
       screen: stackFactory(Home, {
         headerRight: <MessagesLink />,
-        headerTitle: ()=> <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
+        // headerTitle: ()=> <Image resizeMode={"contain"} source={require("../assets/logo.png")} />
+        headerTitle:()=><NavigationContainer />
       }),
       navigationOptions: {
         tabBarIcon: ({focused}) => (
@@ -93,25 +105,25 @@ export default createBottomTabNavigator(
       navigationOptions: {
         tabBarOnPress: ({ navigation }) =>
           navigation.navigate("PhotoNavigation"),
-        tabBarIcon: ({focused}) => (
-          <NavIcon
-            focused={focused}
-            name={Platform.OS === "ios" ? "ios-add" : "md-add"}
-            size={32} />
-        )
-      }
-    },
-    Notifications: {
-      screen: stackFactory(Notifications, {
-        title: "Notifications"
-      }),
-      navigationOptions: {
-        tabBarIcon: ({ focused }) => (
-          <AntDesign
-            focused={focused}
-            name={focused ? "star" : "staro"}
-            color={focused ? styles.navyColor : styles.darkGreyColor}
-            size={26} />
+          tabBarIcon: ({focused}) => (
+            <NavIcon
+              focused={focused}
+              name={Platform.OS === "ios" ? "ios-add" : "md-add"}
+              size={32} />
+          )
+        }
+      },
+      Notifications: {
+        screen: stackFactory(Notifications, {
+          title: "Notifications"
+        }),
+        navigationOptions: {
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              focused={focused}
+              name={focused ? "star" : "staro"}
+              color={focused ? styles.navyColor : styles.darkGreyColor}
+              size={26} />
         )
       }
     },

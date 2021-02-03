@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput } from "react-native";
 import PropTypes from "prop-types";
-import constants from "../constants";
+import constants from "../Constants";
 import styles from "../styles";
 
 const SearchBar = ({ onChange, value, onSubmit }) => (
@@ -9,16 +9,16 @@ const SearchBar = ({ onChange, value, onSubmit }) => (
     style={{
       width: constants.width - 40,
       height: 35,
-      backgroundColor: styles.lightGreyColor,
+      backgroundColor: styles.searchColor,
       padding: 10,
-      borderRadius: 5,
+      borderRadius: 10,
       textAlign: "center"
     }}
     returnKeyType="search"
     onChangeText={onChange}
     onEndEditing={onSubmit}
     value={value}
-    placeholder={"Search"}
+    placeholder={"검색 ..."}
     placeholderTextColor={styles.darkGreyColor}
   />
 );

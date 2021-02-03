@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components/native";
+import styled from "styled-components";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { Ionicons } from "@expo/vector-icons";
 import * as Permissions from "expo-permissions";
-import constants from "../../constants";
+import constants from "../../Constants";
 import Loader from "../../components/Loader";
 import { TouchableOpacity, Platform } from "react-native";
 import styles from "../../styles";
@@ -84,17 +84,12 @@ export default ({ navigation }) => {
               justifyContent: "flex-end",
               padding: 15,
               width: constants.width,
-              height: constants.height / 2
+              height: constants.width
             }}
           >
             <TouchableOpacity onPress={toggleType}>
               <Icon>
-                <Ionicons
-                  name={"camera-reverse-outline"
-                  }
-                  size={32}
-                  color={"white"}
-                />
+                <Ionicons name="camera-reverse-outline" size={32} color="white" />
               </Icon>
             </TouchableOpacity>
           </Camera>

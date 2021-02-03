@@ -1,16 +1,17 @@
-
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
 import TabNavigation from "./TabNavigation";
 import PhotoNavigation from "./PhotoNavigation";
 import MessageNavigation from "./MessageNavigation";
-import styles from "../styles";
+import UploadNavigation from "./UploadNavigation";
 
-const MainNavigation = createStackNavigator({
-    TabNavigation,
-    PhotoNavigation,
-    MessageNavigation
-    },
+const MainNavigation = createStackNavigator(
+    {
+        TabNavigation,
+        PhotoNavigation,
+        MessageNavigation,
+        UploadNavigation
+}   ,
     {
         headerMode: "none",
         mode: "modal"

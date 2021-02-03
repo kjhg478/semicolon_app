@@ -4,7 +4,7 @@ import { Image, ScrollView, TouchableOpacity } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import styled from "styled-components";
 import Loader from "../../components/Loader";
-import constants from "../../constants";
+import constants from "../../Constants";
 import styles from "../../styles";
 
 const View = styled.View`
@@ -79,12 +79,10 @@ export default ({ navigation }) => {
           {hasPermission ? (
             <>
               <Image
-                style={{ width: constants.width, height: constants.height / 1.7 }}
+                style={{ width: constants.width, height: constants.width }}
                 source={{ uri: selected.uri }}
                 />
-                {/* <Button onPress={handleSelected}>
-                  <Text>Next</Text>
-                </Button> */}
+                
               <ScrollView contentContainerStyle={{ flexDirection: "row", flexWrap:"wrap" }}>
                 {allPhotos.map(photo => (
                   <TouchableOpacity

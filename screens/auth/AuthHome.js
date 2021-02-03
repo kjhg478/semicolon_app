@@ -1,7 +1,6 @@
 import React from "react";
-import styled from 'styled-components/native';
-import { TouchableOpacity } from "react-native-gesture-handler";
-import constants from "../../constants";
+import styled from "styled-components/native";
+import Constants from "../../Constants";
 import AuthButton from "../../components/AuthButton";
 
 const View = styled.View`
@@ -11,8 +10,7 @@ const View = styled.View`
 `;
 
 const Image = styled.Image`
-  margin: -30px 0;
-  width: ${constants.width / 2.5};
+  width: ${Constants.width / 2.5};
 `;
 
 const Touchable = styled.TouchableOpacity``;
@@ -28,12 +26,12 @@ export default ({ navigation }) => (
   <View>
     <Image resizeMode={"contain"} source={require("../../assets/logo.png")} />
     <AuthButton
-      text={"Create New Account"}
-      onPress={() => navigation.navigate("Signup")}
+      text={"회원가입"}
+      onPress={() => navigation.navigate("CheckEmail")}
     />
     <Touchable onPress={() => navigation.navigate("Login")}>
       <LoginLink>
-        <LoginLinkText>Log in</LoginLinkText>
+        <LoginLinkText>로그인</LoginLinkText>
       </LoginLink>
     </Touchable>
   </View>
