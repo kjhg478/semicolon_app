@@ -65,6 +65,7 @@ const Post = ({
   isLiked: isLikedProp,
   navigation
 }) => {
+  console.log(id);
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
   const [copyCaption, setCopyCaption] = useState(caption)

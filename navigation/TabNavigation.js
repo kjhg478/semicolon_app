@@ -56,6 +56,7 @@ const stackFactory = (initialRoute, customConfig) =>
           headerBackTitle:" ",
           headerTintColor: styles.blackColor,
           title: "Comments"
+        
         }
       }
     },
