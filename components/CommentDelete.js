@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 import { EvilIcons } from "@expo/vector-icons";
 
 const CommentDelete = ({ setSelfComments, comments, id }) => {
-    console.log(setSelfComments, comments, id)
     const [removeCommentMutation] = useMutation(DELETE_COMMENT, {
     variables: { id }, refetchQueries: [{query:FEED_QUERY}]
     });

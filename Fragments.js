@@ -5,10 +5,18 @@ export const POST_FRAGMENT = gql`
     id
     location
     caption
+    likes {
+      post {
+        user {
+          username
+        }
+      }
+    }
     user {
       id
       avatar
       username
+      fullName
     }
     files {
       id

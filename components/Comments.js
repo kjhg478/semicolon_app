@@ -101,14 +101,12 @@ const Comments = ({
   navigation,
   commentId
 }) => {
-  console.log("hello")
   const [selfComments, setSelfComments] = useState();
   // const [isCommenting, setIsCommenting] = useState(false);
   const commentInput = useInput("");
   const [addCommentMutation] = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: commentInput.value }, refetchQueries: [{query:FEED_QUERY}]
   });
-  console.log(comments.id, id)
 
   const submitComment = async () => {
     // if (commentInput.value !== "" && isCommenting === false) {
@@ -153,7 +151,7 @@ const Comments = ({
       <ScrollView style={{flex: 1, padding:10}} >
           
           {comments.map(comment => (
-        <Swipeable renderRightActions={() => <CommentDelete id={comment.id} comments={comments} setSelfComments={setSelfComments}  />}>
+        <Swipeable renderRightActions={() => <CommentDelete id={comment.id} comments={comment} setSelfComments={setSelfComments}  />}>
         <Touchable onPress={() => navigation.navigate("UserDetail", { username: comment.user.username })}>
           <Div>
                

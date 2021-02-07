@@ -7,16 +7,16 @@ import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../Constants";
 import styles from "../styles";
-import { useMutation } from "react-apollo-hooks";
+import { useMutation, useSubscription } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 import Comments from "./Comments";
+import Like from "./LikeNotification";
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
     toggleLike(postId: $postId)
   }
 `;
-
 const Container = styled.View`
   margin-bottom: 15px;
 `;
@@ -63,28 +63,29 @@ const Post = ({
   caption,
   comments = [],
   isLiked: isLikedProp,
-  navigation
+  navigation,
+  likes
 }) => {
-  console.log(id);
-  const [isLiked, setIsLiked] = useState(isLikedProp);
-  const [likeCount, setLikeCount] = useState(likeCountProp);
+  // const [isLiked, setIsLiked] = useState(isLikedProp);
+  // const [likeCount, setLikeCount] = useState(likeCountProp);
   const [copyCaption, setCopyCaption] = useState(caption)
-  const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
-    variables: {
-      postId: id
-    }
-  });
-  const handleLike = async () => {
-    if (isLiked === true) {
-      setLikeCount(l => l - 1);
-    } else {
-      setLikeCount(l => l + 1);
-    }
-    setIsLiked(p => !p);
-    try {
-      await toggleLikeMutaton();
-    } catch (e) { }
-  };
+
+  // const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
+  //   variables: {
+  //     postId: id
+  //   }
+  // });
+  // const handleLike = async () => {
+  //   if (isLiked === true) {
+  //     setLikeCount(l => l - 1);
+  //   } else {
+  //     setLikeCount(l => l + 1);
+  //   }
+  //   setIsLiked(p => !p);
+  //   try {
+  //     await toggleLikeMutaton();
+  //   } catch (e) { }
+  // };
   return (<Container>
       <Header>
         <Touchable
@@ -112,8 +113,9 @@ const Post = ({
         ))}
       </Swiper>
       <InfoContainer>
-        <IconsContainer>
-          <Touchable onPress={handleLike}>
+      <IconsContainer>
+        <Like isLikedProp={isLikedProp} likeCountProp={likeCountProp} id={id} user={user} likes={likes }/>
+          {/* <Touchable onPress={handleLike}>
             <IconContainer>
               <AntDesign
                 size={24}
@@ -129,7 +131,7 @@ const Post = ({
                 }
               />
             </IconContainer>
-          </Touchable>
+          </Touchable> */}
           <Touchable onPress={() => navigation.navigate("CommentDetail", { id })}>
             <IconContainer >
               <FontAwesome
@@ -141,7 +143,7 @@ const Post = ({
           </Touchable>
         </IconsContainer>
         <Touchable>
-          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
+          {/* <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold> */}
         </Touchable>
         <Caption>
           <Bold>{user.username}</Bold> {caption}
