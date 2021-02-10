@@ -1,23 +1,24 @@
 import { createStackNavigator } from "react-navigation-stack";
-import Messages from "../screens/messages/Messages";
-import Message from "../screens/messages/Message";
+import RoomsContainer from "../screens/messages/Rooms";
+import MessageContainer from "../screens/messages/Message";
 import styles from "../styles";
 
 export default createStackNavigator({
-  Messages: {
-    screen: Messages,
+  RoomsContainer: {
+    screen: RoomsContainer,
     navigationOptions: {
       headerBackTitle: " ",
       headerTintColor: styles.blackColor,
-      title: "Messages"
+      title: "Rooms"
     }
   },
-  Message: {
-    screen: Message,
-    navigationOptions: {
+  MessageContainer: {
+    screen: MessageContainer,
+    navigationOptions: ({ navigation }) => ({
       headerBackTitle: " ",
       headerTintColor: styles.blackColor,
-      title: "Message"
-    }
+      title: `${navigation.getParam("roomInfo").userName}님과의 대화`
+      })
   },
 });
+

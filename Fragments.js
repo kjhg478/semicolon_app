@@ -5,18 +5,10 @@ export const POST_FRAGMENT = gql`
     id
     location
     caption
-    likes {
-      post {
-        user {
-          username
-        }
-      }
-    }
     user {
       id
       avatar
       username
-      fullName
     }
     files {
       id
@@ -27,7 +19,6 @@ export const POST_FRAGMENT = gql`
     comments {
       id
       text
-      isCommented
       user {
         avatar
         id
@@ -49,6 +40,17 @@ export const USER_FRAGMENT = gql`
     isFollowing
     isSelf
     bio
+    rooms {
+      id
+      participants{
+        id
+      }
+    }
+    following{
+      id
+      username
+      avatar
+    }
     followingCount
     followersCount
     postsCount
@@ -57,4 +59,13 @@ export const USER_FRAGMENT = gql`
     }
   }
   ${POST_FRAGMENT}
+`;
+
+export const ME = gql`
+  {
+    me {
+      ...UserParts
+    }
+  }
+  ${USER_FRAGMENT}
 `;

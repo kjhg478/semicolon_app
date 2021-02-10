@@ -18,6 +18,7 @@ export const SEARCH = gql`
       }
       likeCount
       commentCount
+
     }
   }
 `;
@@ -45,7 +46,7 @@ const SearchPresenter = ({ term, shouldFetch }) => {
             {loading ? (<Loader />
             ) : (data &&
                 data.searchPost &&
-                data.searchPost.map(post => <SquarePhoto key={post.id} {...post} />)
+                data.searchPost.map(post => <SquarePhoto key={post.id} {...post}  />)
                 )
             }
       </ScrollView >

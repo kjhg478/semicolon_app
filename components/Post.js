@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Platform } from "react-native";
 import styled from "styled-components/native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -9,14 +9,20 @@ import constants from "../Constants";
 import styles from "../styles";
 import { useMutation, useSubscription } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
-import Comments from "./Comments";
-import Like from "./LikeNotification";
 
 export const TOGGLE_LIKE = gql`
   mutation toggelLike($postId: String!) {
     toggleLike(postId: $postId)
   }
 `;
+export const SEND_NOTIFICATION = gql`
+  mutation sendNotificate($username:String! $to:String! $from:String $message:String $post:String $state:String!)
+  {
+    sendNotificate(username: $username to: $to from: $from message: $message post:$post state:$state)
+  }
+`;
+
+
 const Container = styled.View`
   margin-bottom: 15px;
 `;
@@ -63,29 +69,45 @@ const Post = ({
   caption,
   comments = [],
   isLiked: isLikedProp,
-  navigation,
-  likes
+  me,
+  navigation
 }) => {
-  // const [isLiked, setIsLiked] = useState(isLikedProp);
-  // const [likeCount, setLikeCount] = useState(likeCountProp);
-  const [copyCaption, setCopyCaption] = useState(caption)
 
-  // const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
-  //   variables: {
-  //     postId: id
-  //   }
-  // });
-  // const handleLike = async () => {
-  //   if (isLiked === true) {
-  //     setLikeCount(l => l - 1);
-  //   } else {
-  //     setLikeCount(l => l + 1);
-  //   }
-  //   setIsLiked(p => !p);
-  //   try {
-  //     await toggleLikeMutaton();
-  //   } catch (e) { }
-  // };
+  const [isLiked, setIsLiked] = useState(isLikedProp);
+  const [likeCount, setLikeCount] = useState(likeCountProp);
+  const [copyCaption, setCopyCaption] = useState(caption)
+  const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
+    variables: {
+      postId: id
+    }
+  });
+
+  const [sendNotificateMutation] = useMutation(SEND_NOTIFICATION, ({
+    variables: {
+    username: me.username,
+    to: user.id,
+    from: me.id,
+    post: `${id},${isLiked}`,
+    state: "3"
+    }
+  }));
+
+  const handleLike = async () => {
+    if (isLiked === true) {
+      setLikeCount(l => l - 1);
+    } else {
+      setLikeCount(l => l + 1);
+    }
+    setIsLiked(p => !p);
+    try {
+      await sendNotificateMutation();
+      await toggleLikeMutaton();
+
+    } catch (e) { 
+      console.log(e)
+    }
+  };
+
   return (<Container>
       <Header>
         <Touchable
@@ -113,9 +135,8 @@ const Post = ({
         ))}
       </Swiper>
       <InfoContainer>
-      <IconsContainer>
-        <Like isLikedProp={isLikedProp} likeCountProp={likeCountProp} id={id} user={user} likes={likes }/>
-          {/* <Touchable onPress={handleLike}>
+        <IconsContainer>
+          <Touchable onPress={handleLike}>
             <IconContainer>
               <AntDesign
                 size={24}
@@ -131,7 +152,7 @@ const Post = ({
                 }
               />
             </IconContainer>
-          </Touchable> */}
+          </Touchable>
           <Touchable onPress={() => navigation.navigate("CommentDetail", { id })}>
             <IconContainer >
               <FontAwesome
@@ -143,13 +164,13 @@ const Post = ({
           </Touchable>
         </IconsContainer>
         <Touchable>
-          {/* <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold> */}
+          <Bold>{likeCount === 1 ? "1 like" : `${likeCount} likes`}</Bold>
         </Touchable>
         <Caption>
           <Bold>{user.username}</Bold> {caption}
         </Caption>
       <Touchable onPress={() => navigation.navigate("CommentDetail", { id })}>
-      {/* <Touchable> */}
+
          {comments.length> 0?<CommentCount>댓글 {comments.length}개 더보기</CommentCount>:<CommentCount>첫번째 댓글의 주인공이 되어주세요!</CommentCount>}
 
         </Touchable>

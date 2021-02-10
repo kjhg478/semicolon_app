@@ -134,7 +134,7 @@ const UserProfile = ({
   isSelf,
   username,
   firstName,
-  lastName,
+  lastName
 
 }) => {
   const [isGrid, setIsGrid] = useState(true);
@@ -165,7 +165,13 @@ const UserProfile = ({
             setIsFollowing(true);
             followMutation();
         }
-    };
+  };
+  
+  const me = {
+    id: id,
+    username: username
+  }
+
   return (!editProfile ? (
     <View>
       <ProfileHeader>
@@ -237,7 +243,7 @@ const UserProfile = ({
         return (<SquarePhoto key={p.id} {...p} />)
       })}</SquareBox> : <>
           {posts && posts.map(p => {
-            return (<Post key={p.id} {...p} />)
+            return (<Post key={p.id} {...p} me={me} />)
           })}</>}
     </View>) : (
       <EditProfile navigation={navigation} userAvatar={avatar} userInfo={userInfo} setUserInfo={setUserInfo} setEditProfile={setEditProfile} />

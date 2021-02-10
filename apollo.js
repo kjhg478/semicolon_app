@@ -38,13 +38,13 @@ const requestLink = new ApolloLink((operation, forward) =>
 );
 
 const httpLink = new HttpLink({
-    uri: "http://192.168.219.101:4000"
+    uri: "http://192.168.219.110:4000"
     // uri: "https://semicolon-backend.herokuapp.com"
 });
 
 const wsLink = new WebSocketLink({
-    uri: `ws://192.168.219.101:4000`,
-    // uri: "https://semicolon-backend.herokuapp.com"
+    uri: `ws://192.168.219.110:4000`,
+    // uri: "https://semicolon-backend.herokuapp.com",
   options: {
     reconnect: true
   }
