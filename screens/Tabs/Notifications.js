@@ -26,6 +26,7 @@ export const GET_NOTIFICATION = gql`
 }
 `;
 
+
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { loading, data, refetch } = useQuery(GET_NOTIFICATION);

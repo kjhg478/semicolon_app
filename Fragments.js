@@ -40,6 +40,7 @@ export const USER_FRAGMENT = gql`
     isFollowing
     isSelf
     bio
+    moToken
     rooms {
       id
       participants{

@@ -72,7 +72,7 @@ const Post = ({
   me,
   navigation
 }) => {
-
+ 
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
   const [copyCaption, setCopyCaption] = useState(caption)
@@ -81,7 +81,7 @@ const Post = ({
       postId: id
     }
   });
-
+ 
   const [sendNotificateMutation] = useMutation(SEND_NOTIFICATION, ({
     variables: {
     username: me.username,
@@ -91,7 +91,6 @@ const Post = ({
     state: "3"
     }
   }));
-
   const handleLike = async () => {
     if (isLiked === true) {
       setLikeCount(l => l - 1);
