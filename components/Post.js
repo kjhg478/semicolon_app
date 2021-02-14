@@ -7,6 +7,7 @@ import Swiper from "react-native-swiper";
 import { gql } from "apollo-boost";
 import constants from "../Constants";
 import styles from "../styles";
+import Tags from "react-native-tags";
 import { useMutation, useSubscription } from "react-apollo-hooks";
 import { withNavigation } from "react-navigation";
 
@@ -60,9 +61,17 @@ const CommentCount = styled.Text`
   font-size: 13px;
 `;
 
+const Tagview = styled.View`
+flex:1;
+    flex-direction: row;
+    align-items:flex-end;
+    justifyContent: flex-end;
+`
+
 const Post = ({
   id,
   user,
+  hashes,
   location,
   files = [],
   likeCount: likeCountProp,
@@ -72,16 +81,17 @@ const Post = ({
   me,
   navigation
 }) => {
- 
+
   const [isLiked, setIsLiked] = useState(isLikedProp);
   const [likeCount, setLikeCount] = useState(likeCountProp);
   const [copyCaption, setCopyCaption] = useState(caption)
+ 
   const [toggleLikeMutaton] = useMutation(TOGGLE_LIKE, {
     variables: {
       postId: id
     }
   });
- 
+
   const [sendNotificateMutation] = useMutation(SEND_NOTIFICATION, ({
     variables: {
     username: me.username,
@@ -91,6 +101,7 @@ const Post = ({
     state: "3"
     }
   }));
+
   const handleLike = async () => {
     if (isLiked === true) {
       setLikeCount(l => l - 1);
@@ -122,6 +133,15 @@ const Post = ({
             <Location>{location}</Location>
         </HeaderUserContainer>
       </Touchable>
+      <Tagview>
+        {hashes.map(hash => (<Tags
+          initialTags={[hash.tag]}
+          readonly
+          onTagPress={(index, tagLabel) => {
+            return navigation.navigate("Search", { tagLabel })
+          }}
+        />))}
+      </Tagview>
       {user.isSelf ? <Popup id={id} copyCaption={copyCaption} setCopyCaption={setCopyCaption} /> : null}
       </Header>
       <Swiper style={{ height: constants.width/0.88 }}>

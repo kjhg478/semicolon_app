@@ -20,7 +20,7 @@ const caculateTime = (time) => {
         const days = getTime[0].split('-');
         const times = getTime[1].substring(0, 8).split(':');
         if (date.getFullYear() == days[0]) {
-            if (date.getMonth() +1 == days[1]) {
+            if (date.getMonth() + 1 == days[1]) {
                 if (date.getDate() == days[2]) {
                     // plus 10 because UK has different time with KR
                     if (date.getHours() == parseInt(times[0])+9) { 
@@ -28,8 +28,8 @@ const caculateTime = (time) => {
                                 // cv
                              return `${parseInt(date.getSeconds()) - parseInt(times[2])} 초전`
                         }else return `${parseInt(date.getMinutes()) - parseInt(times[1])} 분전`
-                    }else return `${parseInt(date.getHours()) - parseInt(times[0])+9} 시간전`
-                } else return `${parseInt(date.getDay()) - parseInt(days[2])} 일전`;
+                    }else return `${parseInt(date.getHours()) - (parseInt(times[0])+9)} 시간전`
+                } else return `${parseInt(date.getDate()) - parseInt(days[2])} 일전`;
             } else return `${parseInt(date.getMonth()+1) - parseInt(days[1])} 달전`;
         } else return `${parseInt(date.getFullYear()) - parseInt(days[0])} 년전`;
 
@@ -39,9 +39,9 @@ const caculateTime = (time) => {
 
 export default ({ data, medata, navigation }) => {
 
-
     const Rooms = data.seeRooms.map((room) => {
         const me = medata.me.id;
+        const myName = medata.me.username;
         const participant = room.participants.filter((person) => me !== person.id)[0]
         const roomNumber = room.messages.length - 1 < 0 ? 0 : room.messages.length - 1
         return {
@@ -51,6 +51,7 @@ export default ({ data, medata, navigation }) => {
             messageTime: caculateTime(room.messages[roomNumber].createdAt),
             messageText: room.messages[roomNumber].text,
             Im: me,
+            myName,
             toId: participant.id
         }
     })
@@ -67,7 +68,8 @@ export default ({ data, medata, navigation }) => {
                             roomId: item.id,
                             toId: item.toId,
                             userName: item.userName,
-                            Im: item.Im
+                            Im: item.Im,
+                            myName: item.myName
                         }
                     })}
                     >

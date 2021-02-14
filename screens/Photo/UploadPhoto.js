@@ -9,11 +9,12 @@ import { gql } from "apollo-boost";
 import { useMutation } from "react-apollo-hooks";
 import { FEED_QUERY } from "../home/Home";
 import { ME } from "../tabs/Profile";
+import Tags from "react-native-tags";
 import { GET_USER } from "../UserDetail";
 
 const UPLOAD = gql`
-  mutation upload($caption: String!, $files: [String!]!, $location: String) {
-    upload(caption: $caption, files: $files, location: $location) {
+  mutation upload($caption: String!, $files: [String!]!, $location: String, $hashes:[String!]) {
+    upload(caption: $caption, files: $files, location: $location, hashes: $hashes) {
       id
       caption
       location
@@ -58,28 +59,41 @@ const Text = styled.Text`
 export default ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
   const photo = navigation.getParam("photo");
+  const [tagInput, setTagInput] = useState();
   const captionInput = useInput("");
   const locationInput = useInput("");
   const [uploadMutation] = useMutation(UPLOAD, {
     refetchQueries: () => [{ query: FEED_QUERY }, {query:ME}]
   });
+
   const handleSubmit = async () => {
     if (captionInput.value === "" || locationInput.value === "") {
       Alert.alert("모든 항목을 입력해 주세요.");
     }
-    const formData = new FormData();
-    const name = photo.filename;
-    const [, type] = name.split(".");
-    const imageType = Platform.os === "ios" ? type.toLowerCase() : "image/jpeg";
-    formData.append("file", {
+
+    const data = photo.map((p) => {
+      const name = p.filename;
+      const uri = p.uri;
+      const [, type] = name.split(".");
+      const imageType = Platform.os === "ios" ? type.toLowerCase() : "image/jpeg";
+      
+      return {
       name,
       type: imageType,
-      uri: photo.uri
+      uri
+      }
     });
+    
+    const formData = new FormData();
+    
+    data.map((dt) => {
+      formData.append("file", dt)
+    });
+    
     try {
       setIsLoading(true);
       const {
-        data: { location }
+        data: { locationArray }
       } = await axios.post("https://semicolon-backend.herokuapp.com/api/upload", formData, {
         headers: {
           "content-type": "multipart/form-data"
@@ -90,7 +104,8 @@ export default ({ navigation }) => {
         data: { upload }
       } = await uploadMutation({
           variables: {
-            files: [location],
+            files: locationArray,
+            hashes:[...tagInput],
             caption: captionInput.value,
             location: locationInput.value
           }
@@ -98,7 +113,7 @@ export default ({ navigation }) => {
       if (upload.id) {
         navigation.navigate("TabNavigation");
       }
-      
+
     } catch (e) {
       console.log("에러 " + e);
       Alert.alert("업로드 실패", "다시 시도해 주세요 🤔");
@@ -111,7 +126,7 @@ export default ({ navigation }) => {
     <View>
       <Container>
         <Image
-          source={{ uri: photo.uri }}
+          source={{ uri: photo[0].uri }}
           style={{ height: 80, width: 80, marginRight: 30 }}
         />
         <Form>
@@ -129,11 +144,20 @@ export default ({ navigation }) => {
             multiline={true}
             placeholderTextColor={styles.darkGreyColor}
           />
+          <Tags
+            initialText="Tag"
+            onChangeTags={tags => {
+              return setTagInput([...tags])
+            }}
+            onTagPress={(index, tagLabel, event) => console.log(index, tagLabel, event)}
+            inputStyle={{ backgroundColor: "white" }}
+            maxNumberOfTags={3}
+          />
           <Button onPress={handleSubmit}>
             {loading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text>업로드 </Text>
+              <Text>업로드</Text>
             )}
           </Button>
         </Form>

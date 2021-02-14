@@ -10,6 +10,10 @@ export const GET_NOTIFICATION = gql`
 {
   getNotificate {
     id
+    to{
+      id
+      username
+    }
     from {
       id
       username
@@ -23,14 +27,16 @@ export const GET_NOTIFICATION = gql`
     }
     createdAt
   }
+  getFollowing{
+    id
+  }
 }
 `;
 
-
 export default ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const { loading, data, refetch } = useQuery(GET_NOTIFICATION);
-  const [Notis, setNotis] = useState([]);
+    const { loading, data, refetch } = useQuery(GET_NOTIFICATION, {
+  });
 
   const refresh = async () => {
     try {

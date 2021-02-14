@@ -5,6 +5,10 @@ export const POST_FRAGMENT = gql`
     id
     location
     caption
+    hashes {
+      id
+      tag
+    }
     user {
       id
       avatar
@@ -37,10 +41,10 @@ export const USER_FRAGMENT = gql`
     fullName
     firstName
     lastName
+    state
     isFollowing
     isSelf
     bio
-    moToken
     rooms {
       id
       participants{

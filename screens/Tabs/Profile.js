@@ -11,15 +11,16 @@ export const ME = gql`
   {
     me {
       ...UserParts
-    }    
+    }
   }
   ${USER_FRAGMENT}
 `;
 
 export default ({ navigation }) => {
- 
   const [refreshing, setRefreshing] = useState(false);
-  const { loading, data, refetch } = useQuery(ME);
+    const { loading, data, refetch } = useQuery(ME, {
+    fetchPolicy: 'cache-and-network'
+  });
   const refresh = async () => {
     try {
       setRefreshing(true);

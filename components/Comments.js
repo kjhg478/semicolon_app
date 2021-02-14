@@ -42,20 +42,19 @@ const Text = styled.Text`
 const Caption = styled.Text`
 `;
 const Div = styled.View`
+    
     width: 100%;
     flexDirection: row;
-    alignItems: center;
+    align-Items: center;
     padding: 7px;
 `;
     // 
     // borderBottomWidth:0.6;
 const Div2 = styled.View`
-  
-    flexDirection: row;
-    alignSelf: flex-end;
-    position:absolute;
-    left:360
-    bottom:13
+  flex:1
+  padding: 5px;
+  flex-direction: row;
+  justify-content: flex-end;
 `
 const Div3 = styled.View`
     
@@ -102,20 +101,12 @@ const Comments = ({
   commentId
 }) => {
   const [selfComments, setSelfComments] = useState();
-  // const [isCommenting, setIsCommenting] = useState(false);
   const commentInput = useInput("");
   const [addCommentMutation] = useMutation(ADD_COMMENT, {
     variables: { postId: id, text: commentInput.value }, refetchQueries: [{query:FEED_QUERY}]
   });
-  console.log(comments.id, id)
 
   const submitComment = async () => {
-    // if (commentInput.value !== "" && isCommenting === false) {
-    //   setIsCommenting(true);
-    // // }
-    // const { which } = event;
-    // if (which === 13) {
-    //   event.preventDefault();
       try {
         const {
           data: { addComment }
@@ -191,7 +182,6 @@ const Comments = ({
 
           </ScrollView>
       </KeyboardAwareScrollView>
-      {/* </KeyboardAvoidingView> */}
       </Container>
         
   )
